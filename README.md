@@ -16,6 +16,24 @@
 
 另外，关于下面要求配置的 Azure Speech Key，它其实也是必要的。准确地说，它主要用于单词练习、Repeat Sentence 和 Read Aloud。尤其是 Repeat Sentence，你必须先听到原音频才能跟着说，如果连音频都无法播放，那练起来就很不地道了。
 
+
+# Repeat sentance + Read aloud (.\practice_pipeline\start_practice_pipeline.ps1 -Page repeat)
+
+这两个题目在我看来其实是一个东西，都是去念一句话，而且都是有稿的（不管稿是听到的还是看到的），都有明确固定的内容要去说，所以我就把它们两个合在一起了。
+
+导入和修改题目都很简单，直接在 sentence.txt 文件里改就行。一行对应一句话，程序会自动进行编排。具体看页面吧，自由度非常大，一切都是为了实用服务。
+
+最开始这个工具还挺简单的，但我做着做着就发现这个也想要、那个也想要，最后功能就越来越多了：
+
+关于 Play Monotone：
+这个注意一下。因为考试要求语调比较平缓，所以我特地加了这个功能。如果点 Play Prompt，它是用 Azure 那边非常自然、抑扬顿挫的声音去念；而 Play Monotone 用的是另一个声音源，读出来会更平缓。我个人练习的时候是照着 Play Monotone 来练的。主要是我自己的声调容易上蹿下跳，所以才用这种办法把语调往回拉，大家使用时根据自己的情况选择就好。
+
+下面的截图展示：
+下面这些内容我尽量都放上去了，截图展示了我念第一句话时的完整信息。大家看一眼就知道大概包含哪些内容了。反正不好说哪些有用、哪些没用，给到的信息多一点总比没有强
+
+<img width="1763" height="3939" alt="image" src="https://github.com/user-attachments/assets/1c5a3dbf-b921-4f9f-a18e-acad78629a72" />
+
+
 先跟大家说明一下这个情况，等我后面把代码再整理一下，再来更新这个 README 吧。我现在实在是太乱了
 
 # PTE-Speaking-exercise
