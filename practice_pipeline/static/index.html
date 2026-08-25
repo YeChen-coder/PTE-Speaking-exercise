@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pronunciation Practice Pipeline</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body data-mode="read">
+    <main class="app-shell">
+      <aside class="queue-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Queue</p>
+            <h1>Practice Pipeline</h1>
+          </div>
+          <button class="icon-button" id="editSentencesButton" type="button" title="Edit sentences">Edit</button>
+        </div>
+        <div class="queue-stats" id="queueStats"></div>
+        <div class="sentence-list" id="sentenceList"></div>
+      </aside>
+
+      <section class="workbench">
+        <header class="sentence-stage">
+          <div class="stage-meta">
+            <span id="sentenceCounter"></span>
+            <span id="statusPill" class="status-pill">Ready</span>
+            <label class="sound-toggle" title="Play reward audio after high scores">
+              <input id="rewardSoundToggle" type="checkbox" />
+              <span>Reward Sound</span>
+            </label>
+            <label class="volume-control" title="Reward sound volume">
+              <span>Volume</span>
+              <input id="rewardVolumeSlider" type="range" min="0" max="100" step="1" />
+            </label>
+          </div>
+          <p class="current-sentence" id="currentSentence"></p>
+          <div class="stage-actions">
+            <button class="secondary-button" id="prevButton" type="button">Previous</button>
+            <button class="secondary-button" id="nextButton" type="button">Next</button>
+            <button class="record-button" id="recordButton" type="button">Start Recording</button>
+            <button class="stop-button" id="stopButton" type="button" disabled>Stop</button>
+          </div>
+        </header>
+
+        <section class="audio-strip">
+          <div>
+            <p class="eyebrow">Recorded Audio</p>
+            <audio id="resultAudio" controls preload="metadata"></audio>
+          </div>
+          <div class="latest-files" id="latestFiles"></div>
+        </section>
+
+        <section class="score-grid" id="scoreGrid"></section>
+        <section class="prosody-overview" id="prosodyOverview"></section>
+        <section class="machine-mode-section" id="machineModeSection"></section>
+
+        <section class="timeline-section">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Timeline</p>
+              <h2>Words Aligned To Audio</h2>
+            </div>
+            <div class="legend">
+              <span><i class="dot good"></i>90+</span>
+              <span><i class="dot warn"></i>70-89</span>
+              <span><i class="dot bad"></i>&lt;70</span>
+            </div>
+          </div>
+          <div class="time-ruler" id="timeRuler"></div>
+          <div class="timeline-wrap">
+            <div class="playhead" id="playhead"></div>
+            <div class="word-timeline" id="wordTimeline"></div>
+          </div>
+        </section>
+
+        <section class="analysis-layout">
+          <aside class="word-panel">
+            <div class="section-head compact">
+              <div>
+                <p class="eyebrow">Words</p>
+                <h2>Score Stack</h2>
+              </div>
+            </div>
+            <div class="word-list" id="wordList"></div>
+          </aside>
+
+          <section class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <p class="eyebrow">Selected Word</p>
+                <h2 id="selectedWordTitle">No result yet</h2>
+              </div>
+              <button class="secondary-button" id="seekWordButton" type="button">Play From Word</button>
+            </div>
+            <div class="detail-metrics" id="detailMetrics"></div>
+            <div class="subsection">
+              <h3>Phonemes</h3>
+              <div class="phoneme-lane" id="phonemeLane"></div>
+            </div>
+            <div class="subsection">
+              <h3>Syllables</h3>
+              <div class="syllable-lane" id="syllableLane"></div>
+            </div>
+            <div class="subsection">
+              <h3>Prosody Feedback</h3>
+              <div class="feedback-grid" id="feedbackGrid"></div>
+            </div>
+          </section>
+        </section>
+
+        <section class="tabs-section">
+          <div class="tab-row">
+            <button class="tab active" type="button" data-view="words">Words</button>
+            <button class="tab" type="button" data-view="phonemes">Phonemes</button>
+            <button class="tab" type="button" data-view="low">Lowest Scores</button>
+            <button class="tab" type="button" data-view="runs">Runs</button>
+          </div>
+          <div class="tab-panel" id="tabPanel"></div>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="sentenceDialog" class="sentence-dialog">
+      <form method="dialog" class="dialog-surface">
+        <div class="dialog-head">
+          <div>
+            <p class="eyebrow">Sentences</p>
+            <h2>Edit Queue</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="submit">Close</button>
+        </div>
+        <textarea id="sentenceEditor" spellcheck="false"></textarea>
+        <div class="dialog-actions">
+          <button class="secondary-button" value="cancel" type="submit">Cancel</button>
+          <button class="record-button" id="saveSentencesButton" value="default" type="button">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="/static/app.js?v=20260715-monotone1"></script>
+  </body>
+</html>

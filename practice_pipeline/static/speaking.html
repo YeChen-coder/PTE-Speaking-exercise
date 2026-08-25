@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Free Speaking Practice</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body data-mode="speaking">
+    <main class="app-shell speaking-shell">
+      <aside class="queue-panel speaking-sentence-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Free Speaking</p>
+            <h1>Sentence Stack</h1>
+          </div>
+        </div>
+        <div class="queue-stats" id="speakingStats"></div>
+        <div class="sentence-list" id="sentenceList"></div>
+      </aside>
+
+      <section class="workbench">
+        <header class="sentence-stage speaking-stage">
+          <div class="stage-meta">
+            <span id="statusPill" class="status-pill">Ready</span>
+            <span id="recordingMeta" class="status-pill">No recording</span>
+            <label class="sound-toggle" title="Hear your microphone in your headphones while recording">
+              <input id="micMonitorToggle" type="checkbox" />
+              <span>Monitor Voice</span>
+            </label>
+          </div>
+          <div class="speaking-title-row">
+            <div>
+              <p class="eyebrow">Describe Image / Response To Situation</p>
+              <h1>Long Response Assessment</h1>
+            </div>
+            <div class="recording-timer-card">
+              <span>Timer</span>
+              <strong id="recordingTimer">00:00.0</strong>
+            </div>
+          </div>
+          <div class="stage-actions">
+            <button class="record-button" id="recordButton" type="button">Start Recording</button>
+            <button class="stop-button" id="stopButton" type="button" disabled>Stop</button>
+            <button class="secondary-button" id="uploadButton" type="button" disabled>Upload</button>
+          </div>
+          <p class="shortcut-hint">Space cycles start recording, stop and upload, then start again. Monitor Voice lets you hear your mic while recording. M stops without upload. W/S scroll the page.</p>
+        </header>
+
+        <section class="audio-strip speaking-audio-strip">
+          <div>
+            <p class="eyebrow">Recorded Audio</p>
+            <audio id="resultAudio" controls preload="metadata"></audio>
+          </div>
+          <div class="latest-files" id="latestFiles"></div>
+        </section>
+
+        <section class="score-grid" id="scoreGrid"></section>
+        <section class="prosody-overview" id="prosodyOverview"></section>
+
+        <section class="script-panel detail-panel">
+          <div class="detail-header">
+            <div>
+              <p class="eyebrow">Optional Script</p>
+              <h2>Script vs Azure Transcript</h2>
+            </div>
+            <div class="stage-actions script-actions">
+              <button class="secondary-button" id="applyScriptButton" type="button">Use Script</button>
+              <button class="record-button" id="saveScriptButton" type="button">Save Script</button>
+              <button class="secondary-button" id="newScriptButton" type="button">New</button>
+              <button class="secondary-button" id="deleteScriptButton" type="button" disabled>Delete</button>
+              <button class="secondary-button" id="clearScriptButton" type="button">Clear</button>
+            </div>
+          </div>
+          <div class="script-editor-toolbar">
+            <label class="script-title-field">
+              <span>Title</span>
+              <input id="scriptTitleInput" type="text" placeholder="Script title, e.g. Museum barriers chart" autocomplete="off" />
+            </label>
+            <span class="script-save-status" id="scriptSaveStatus">Not saved</span>
+          </div>
+          <div class="saved-script-section">
+            <div class="section-head compact">
+              <div>
+                <p class="eyebrow">Saved Scripts</p>
+                <h3>Click To Load And Edit</h3>
+              </div>
+            </div>
+            <div class="saved-script-list" id="savedScriptList"></div>
+          </div>
+          <textarea
+            class="script-input"
+            id="scriptInput"
+            spellcheck="false"
+            placeholder="Paste an optional script here. It will be split into sentences, but Azure sentence audio is generated only when you click Play on a sentence."
+          ></textarea>
+          <div class="script-compare-layout">
+            <div>
+              <div class="section-head compact">
+                <div>
+                  <p class="eyebrow">Script Sentences</p>
+                  <h3>Manual Azure Audio</h3>
+                </div>
+              </div>
+              <div class="script-sentence-list" id="scriptSentenceList"></div>
+            </div>
+            <div>
+              <div class="section-head compact">
+                <div>
+                  <p class="eyebrow">Recognized</p>
+                  <h3>Text Comparison</h3>
+                </div>
+              </div>
+              <div class="transcript-compare" id="transcriptCompare"></div>
+            </div>
+          </div>
+          <div class="script-audio-row">
+            <p class="eyebrow">Selected Script Audio</p>
+            <audio id="scriptAudio" controls preload="metadata"></audio>
+          </div>
+        </section>
+
+        <section class="sentence-detail-panel detail-panel" id="sentenceDetailPanel">
+          <div class="detail-header">
+            <div>
+              <p class="eyebrow">Selected Sentence</p>
+              <h2 id="selectedSentenceTitle">No result yet</h2>
+            </div>
+          </div>
+          <div class="sentence-detail-grid" id="sentenceMetrics"></div>
+          <div class="sentence-text-block" id="sentenceTranscript"></div>
+          <div class="sentence-word-chain" id="sentenceWordChain"></div>
+        </section>
+
+        <section class="timeline-section">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Timeline</p>
+              <h2>Words Aligned To Audio</h2>
+            </div>
+            <div class="legend">
+              <span><i class="dot good"></i>90+</span>
+              <span><i class="dot warn"></i>70-89</span>
+              <span><i class="dot bad"></i>&lt;70</span>
+            </div>
+          </div>
+          <div class="time-ruler" id="timeRuler"></div>
+          <div class="timeline-wrap">
+            <div class="playhead" id="playhead"></div>
+            <div class="word-timeline" id="wordTimeline"></div>
+          </div>
+        </section>
+
+        <section class="analysis-layout">
+          <aside class="word-panel">
+            <div class="section-head compact">
+              <div>
+                <p class="eyebrow">Words In Sentence</p>
+                <h2>Lowest First</h2>
+              </div>
+            </div>
+            <div class="word-list" id="wordList"></div>
+          </aside>
+
+          <section class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <p class="eyebrow">Selected Word</p>
+                <h2 id="selectedWordTitle">No result yet</h2>
+              </div>
+              <button class="secondary-button" id="seekWordButton" type="button">Play From Word</button>
+            </div>
+            <div class="detail-metrics" id="detailMetrics"></div>
+            <div class="subsection">
+              <h3>Phonemes</h3>
+              <div class="phoneme-lane" id="phonemeLane"></div>
+            </div>
+            <div class="subsection">
+              <h3>Syllables</h3>
+              <div class="syllable-lane" id="syllableLane"></div>
+            </div>
+            <div class="subsection">
+              <h3>Prosody Feedback</h3>
+              <div class="feedback-grid" id="feedbackGrid"></div>
+            </div>
+          </section>
+        </section>
+
+        <section class="tabs-section">
+          <div class="tab-row">
+            <button class="tab active" type="button" data-view="sentences">Sentences</button>
+            <button class="tab" type="button" data-view="words">Words + Breaks</button>
+            <button class="tab" type="button" data-view="phonemes">Phonemes</button>
+            <button class="tab" type="button" data-view="low">Lowest Scores</button>
+          </div>
+          <div class="tab-panel" id="tabPanel"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/static/speaking.js?v=20260713-monitor1"></script>
+  </body>
+</html>
